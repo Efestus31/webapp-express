@@ -21,18 +21,33 @@ router.get('/:id', (req, res) => {
     const id = req.params.id
     const sql = `SELECT * FROM movies WHERE id = ?`;
 
+    //get all reviews for a movie
+    const reviewsSQL = `SELECT * FROM reviews WHERE movie_id = ?`;
+
+
     //get movie by given id
     connection.query(sql, [id], (err, results) => {
+
+        //handle errors
         if (err) return res.status(500).json({ err: err })
-        console.log(results);
+        if (results.length == 0) return res.status(404).json({ err: 'movie not found!' })
 
-        res.json({
-            movies: `returning the movie with an id of ${id}`
+        //get all the reviews associated with the movie
+
+        connection.query(reviewsSQL, [id], (err2, reviewsResults) => {
+            if (err2) return res.status(500).json({ err: 'problem retrieving reviews' })
+
+            const movie = {
+                ...results[0],
+                reviews: reviewsResults
+
+            }
+
+            res.json({
+                movies: movie
+            })
         })
-
     });
-
-
 });
 
 
