@@ -11,6 +11,7 @@ const corsOptions = {
 }
 
 server.use(cors(corsOptions))
+server.use(express.json())
 
 const PORT = process.env.PORT || 3001;
 const HOST = process.env.HOST || "localhost";
