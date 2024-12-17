@@ -54,7 +54,7 @@ function review(req, res) {
     const movie_id = Number(req.params.id);
     const { name, text, vote } = req.body;
     const now = new Date();
-    const reviewDate = `${now.getFullYear()}/${now.getMonth()}/${now.getDay()}`
+    const reviewDate = `${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()}`
 
     //sql query
     const sql = "INSERT INTO `reviews` SET name=?, text=?, vote=?, movie_id=?, created_at=?"
